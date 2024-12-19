@@ -17,6 +17,7 @@ O projeto implementa os atuadores:
 
 ### 📂 Conteúdo
 - **`src/`**: Código-fonte do projeto (arquivos `.c` e `.h`).
+  - Os arquivos `.h` contêm as definições de funções e constantes usadas em seus respectivos módulos.
 - **`docs/`**: Imagens e documentação sobre configurações no STM32CubeMX.
 
 ---
