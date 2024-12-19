@@ -1,6 +1,6 @@
 # Leitura de Dados do Sensor DHT11
 
-![Imagem do Sensor DHT11]([https://exemplo.com/imagem.jpg](https://components101.com/sites/default/files/components/DHT11-Sensor.jpg))
+![Imagem do Sensor DHT11]("C:\Users\pdnv2\Downloads\DHT11-Sensor.jpg"))
 
 Este documento descreve detalhadamente o funcionamento do código para leitura do sensor **DHT11**, que mede temperatura e umidade, e como o STM32 interage com ele. A comunicação com o DHT11 é feita através de pulsos de alta e baixa tensão, e a troca de dados é realizada por meio de sinais **HIGH** e **LOW**.
 
