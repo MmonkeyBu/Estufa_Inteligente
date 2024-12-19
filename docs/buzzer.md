@@ -25,7 +25,7 @@ No projeto **Estufa Inteligente**, o buzzer é controlado por um sinal PWM gerad
    - Ajuste os parâmetros do timer, como **Prescaler** e **Auto-Reload Register (ARR)**. Para gerar um sinal PWM de 1 kHz com o sistema a 72 MHz, configure o **Prescaler** para 71 e o **ARR** para 999.
      - A frequência do PWM é calculada pela fórmula:
        \[
-       f_{\text{PWM}} = \frac{f_{\text{Timer}}}{(Prescaler + 1) \times (ARR + 1)}
+      f_PWM = f_Timer / ((Prescaler + 1) * (ARR + 1))
        \]
      - Onde `f_Timer` é a frequência do timer (geralmente igual ao clock do sistema).
 
