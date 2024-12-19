@@ -1,33 +1,47 @@
-# Controle de Buzzer com PWM
+# buzzer.md
 
-Este módulo controla um buzzer utilizando PWM no microcontrolador STM32. O código utiliza o Timer 3, Canal 2 para gerar o sinal PWM, que é usado para ligar e desligar o buzzer com intensidade ajustável.
+Este documento descreve o processo de configuração do buzzer utilizando PWM no microcontrolador STM32, com base no Timer 3, Canal 2. A configuração é feita no STM32CubeMX, e as funções de controle do buzzer são implementadas no código.
 
-# Configuração do Timer 3 (TIM3) e Canal 2 para Controle de Buzzer
+## Passo a Passo para Configuração no STM32CubeMX
 
-No projeto **Estufa Inteligente**, o buzzer é controlado por um sinal PWM gerado pelo Timer 3 (TIM3), Canal 2. A seguir, estão os passos necessários para configurar o TIM3 no CubeMX e os detalhes sobre o código gerado.
+### 1. Abrindo o STM32CubeMX
 
-## 1. Configuração do Timer 3 (TIM3) no CubeMX
+- Abra o STM32CubeMX e crie um novo projeto para o seu microcontrolador STM32 (neste caso, o STM32F446RE).
+  
+### 2. Habilitando o Timer 3
 
-### Passos:
-1. **Abrir o CubeMX**:
-   - Inicie o STM32CubeMX e abra seu projeto existente.
+- No STM32CubeMX, selecione a aba **"Peripherals"** e depois clique em **"Timers"**.
+- Habilite o **"TIM3"**, que será utilizado para gerar o sinal PWM.
+- Defina o **Mode** como **PWM Generation CH2** (Canal 2).
+  
+### 3. Configurando o Timer 3
 
-2. **Configurar o Timer 3**:
-   - Vá até a aba **Pinout & Configuration** e localize o **TIM3**.
-   - Configure o **PWM Generation CH2** para o Canal 2 do TIM3.
+- **Prescaler:** Configure o prescaler do timer para controlar a frequência do PWM. Por exemplo, se você deseja uma frequência de 1 kHz, defina o prescaler para 84 (dependendo do clock do sistema).
+- **Auto-reload:** Defina o valor de auto-reload para determinar o ciclo completo do PWM. Para uma frequência de 1 kHz com um clock de 84 MHz, configure o valor de auto-reload como 840.
+- **PWM Mode:** Certifique-se de que o modo PWM esteja ativo e que o Timer 3 esteja configurado no **PWM Generation Mode**.
 
-3. **Configuração do GPIO para o PWM**:
-   - Identifique o pino associado ao **TIM3 Channel 2** (geralmente `PA7` ou `PB5`).
-   - No painel **Pinout & Configuration**, configure o pino como **PWM Generation Output**.
+### 4. Configurando o Pino de Saída
 
-4. **Configuração do Timer**:
-   - Vá para a aba **Configuration** e selecione **TIM3**.
-   - Ajuste os parâmetros do timer, como **Prescaler** e **Auto-Reload Register (ARR)**. Para gerar um sinal PWM de 1 kHz com o sistema a 72 MHz, configure o **Prescaler** para 71 e o **ARR** para 999.
-     - A frequência do PWM é calculada pela fórmula:
-       \[
-      f_PWM = f_Timer / ((Prescaler + 1) * (ARR + 1))
-       \]
-     - Onde `f_Timer` é a frequência do timer (geralmente igual ao clock do sistema).
+- Na aba **"Pinout & Configuration"**, localize o pino que será utilizado para o sinal PWM (geralmente, o pino **PA6** no STM32F446RE para o Canal 2 do Timer 3).
+- Configure este pino para **TIM3_CH2** (o Canal 2 do Timer 3).
 
-5. **Gerar o Código**:
-   - Após configurar o timer, clique em **Project** e depois em **Generate Code** para gerar o código de inicialização do CubeMX.
+### 5. Configurando a Interrupt (se necessário)
+
+- Caso deseje utilizar interrupções, habilite a interrupção do Timer 3 na aba **NVIC**.
+
+### 6. Gerando o Código
+
+- Após todas as configurações, clique em **"Project"** e defina o nome do projeto.
+- Clique em **"Generate Code"** para gerar o código de inicialização automaticamente no STM32CubeIDE.
+
+## Passo a Passo para Implementação no Código
+
+### 1. Iniciando o PWM
+
+A função `Buzzer_Init` é responsável por iniciar o PWM para controlar o buzzer. Aqui, usamos a função `HAL_TIM_PWM_Start` para ativar o PWM do Timer 3, Canal 2.
+
+```c
+void Buzzer_Init(void) {
+    // Inicializa o PWM para o buzzer
+    HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
+}
