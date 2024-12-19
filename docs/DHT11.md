@@ -22,30 +22,33 @@ Este tutorial descreve o processo para configurar o sensor de temperatura e umid
     - A função `__HAL_TIM_SET_COUNTER(&htim2, 0)` é usada para resetar o contador do timer e iniciar a captura dos pulsos.
     - Os tempos dos pulsos são lidos utilizando a função `__HAL_TIM_GET_COUNTER(&htim2)`.
 
-## **3. Código para Leitura dos Dados do Sensor**
+# Leitura de Dados do Sensor DHT11
 
-O código de leitura do sensor **DHT11** envolve a troca de sinais entre o microcontrolador e o sensor para coletar os dados de temperatura e umidade.
+Este documento descreve detalhadamente o funcionamento do código para leitura do sensor **DHT11**, que mede temperatura e umidade, e como o STM32 interage com ele. A comunicação com o DHT11 é feita através de pulsos de alta e baixa tensão, e a troca de dados é realizada por meio de sinais **HIGH** e **LOW**.
 
-### Passos principais:
+## 1. Geração e Leitura dos Pulsos
 
-1. **Configuração Inicial do Pino GPIO**:
-    - O pino GPIO que conecta o sensor é configurado como saída para gerar o pulso de inicialização.
-    - O pino é então configurado como entrada para ler os dados de resposta do sensor.
+O sensor **DHT11** utiliza um protocolo de comunicação baseado em pulsos de alta e baixa tensão. O processo de leitura dos dados envolve a troca de sinais entre o microcontrolador (STM32) e o sensor.
 
-2. **Geração do Pulso de Início**:
-    - O pino é definido como LOW por 20 ms, depois é definido como HIGH, e após isso, o pino é configurado como entrada.
+### **Pulso de Início (Start Pulse)**
 
-3. **Leitura dos Dados**:
-    - Utilizando o timer **TIM2**, o código monitora os pulsos HIGH e LOW para calcular os valores binários enviados pelo sensor.
-    - A duração de cada pulso é medida e, com base nisso, os valores de temperatura e umidade são extraídos.
+- O STM32 envia um sinal **LOW** (0) por um período de **20 ms** para iniciar a comunicação com o sensor.
+- O sensor responde com um sinal **HIGH** (1) por **80 ms**, seguido por um sinal **LOW** (0) por **80 ms**.
 
-4. **Decodificação dos Dados**:
-    - O código converte os sinais recebidos em bits, e a sequência de bits é convertida para os valores de temperatura e umidade.
+### **Leitura dos Dados**
 
-## **Conclusão**
+- O sensor envia **40 bits** de dados: 16 bits para **umidade**, 16 bits para **temperatura**, e 8 bits de **verificação**.
+- Cada bit é enviado por meio de pulsos **HIGH**, com a duração do pulso determinando o valor do bit:
+  - Pulso **HIGH** mais longo (> 50 microsegundos) representa **bit 1**.
+  - Pulso **HIGH** mais curto (< 50 microsegundos) representa **bit 0**.
 
-Este tutorial mostra como configurar o sensor **DHT11** para medir temperatura e umidade utilizando o STM32. Ele cobre as configurações de pinos GPIO e timers no **STM32CubeMX** e apresenta a estrutura de código necessária para integrar o sensor ao microcontrolador.
+## 2. Função `dht11`
 
-Essa configuração permite capturar os dados de temperatura e umidade de forma precisa, utilizando o **TIM2** para medir a duração dos pulsos e calcular os valores a partir dos dados recebidos.
+A função `dht11` tem como objetivo ler os dados de temperatura e umidade enviados pelo sensor. A seguir, detalhamos cada parte dessa função.
 
----
+### **Configuração Inicial do Pino GPIO**
+
+A função `DHT11_SetPinMode` configura o pino GPIO como **saída** para gerar o pulso de início e como **entrada** para ler os sinais de resposta do sensor.
+
+```c
+DHT11_SetPinMode(GPIOA, GPIO_PIN_8, GPIO_MODE_OUTPUT_PP);
