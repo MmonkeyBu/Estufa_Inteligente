@@ -94,11 +94,7 @@ Esta função configura o **Timer 1 (TIM1)** para operar em modo PWM e inicializ
 4. **Início do PWM**:
    - O PWM é iniciado com a função `HAL_TIM_PWM_Start`.
 
-## 4. Conclusão
+## 4. Referências
 
-Este código oferece uma solução simples para controle de brilho de LED (ou outro dispositivo controlado por PWM) baseado na intensidade da luz capturada por um sensor LDR. Ele também fornece um método eficiente de monitoramento da intensidade da luz por meio da leitura do ADC e comunicação via UART. A configuração do STM32CubeMX e a implementação do código no STM32CubeIDE facilitam a integração desses componentes em um sistema embarcado.
-
-## 5. Referências
-
-- [Datasheet do Sensor LDR](https://components101.com/sites/default/files/component_datasheet/LDR%20Datasheet.pdf) 
+- [Datasheet do Sensor LDR](https://www.electronicwings.com) (Exemplo de link de datasheet)
 
