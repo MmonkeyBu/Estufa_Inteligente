@@ -28,8 +28,17 @@ Para configurar o sensor **HC-SR04** no **STM32CubeMX**, siga os passos abaixo:
 
 ### **Passo 2: Configuração do Timer**
 
-1. No painel de configuração de **Peripherals**, habilite o **Timer** desejado (por exemplo, **TIM2**).
-2. Configure o **Timer** para ser utilizado em **modo de contagem básica**, sem interrupção, apenas para contar o tempo de pulso.
+Para medir o tempo com precisão, o timer precisa ser configurado no **STM32CubeMX**. O **prescaler** e a **frequência do timer** são essenciais para garantir que o tempo medido seja em **microsegundos**.
+
+1. **Prescaler**: O **prescaler** define o divisor do clock do timer. Por exemplo, se o **prescaler** for 16 e a frequência do timer for 1 MHz (1 µs por contagem), o timer contará a cada 16 ciclos do clock do sistema. O **prescaler** ajusta a resolução do timer, ou seja, a precisão do tempo que o microcontrolador pode medir. Para medir o tempo de voo do pulso ultrassônico em microsegundos, o **prescaler** deve ser configurado adequadamente.
+   
+   **Exemplo**:
+   - Se o sistema está rodando a 72 MHz e o **prescaler** é 72, o timer terá uma resolução de 1 µs, ou seja, cada contagem do timer corresponderá a 1 microsegundo.
+
+2. **Contador do Timer**: O timer começa a contar a partir de 0 quando o pino **TRIG** gera o pulso, e o valor do contador é lido quando o pino **ECHO** retorna ao **LOW**.
+
+3. No painel de configuração de **Peripherals**, habilite o **Timer** desejado (por exemplo, **TIM2**).
+4. Configure o **Timer** para ser utilizado em **modo de contagem básica**, sem interrupção, apenas para contar o tempo de pulso.
 
 ### **Passo 3: Configuração da UART (opcional)**
 
