@@ -63,4 +63,7 @@ void DHT11_SetPinMode(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, uint32_t Mode) {
     HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
 }
 ```
-https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf
+
+## 4. Referências
+
+- [Datasheet do DHT11](https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf) 
