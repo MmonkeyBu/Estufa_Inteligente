@@ -23,13 +23,13 @@ O projeto implementa os atuadores:
 ---
 
 ## 📜 Módulos
-1. 🔊 [**Buzzer (`buzzer.c`)**](docs/buzzer.md) - Controle de som para alertas.
-2. 🌡️ [**DHT11 (`DHT11.c`)**](docs/DHT11.md) - Leitura de temperatura e umidade.
-3. 📏 [**HC-SR04 (`HCSR04.c`)**](docs/HCSR04.md) - Leitura de distância por ultrassom.
-4. 💡 [**LDR (`LDR.c`)**](docs/LDR.md) - Monitoramento de luminosidade.
-5. 📟 [**Menu (`menu.c`)**](docs/menu.md) - Interface de navegação no display OLED.
-6. 🛠️ [**Servo (`servo.c`)**](docs/servo.md) - Controle de um servo motor.
-7. 🧠 [**Principal (`main.c`)**](docs/main.md) - Integração dos módulos.
+1. 🔊 [**Buzzer (`buzzer.c`)**](scr/buzzer.c) - Controle de som para alertas.
+2. 🌡️ [**DHT11 (`DHT11.c`)**](scr/DHT11.c) - Leitura de temperatura e umidade.
+3. 📏 [**HC-SR04 (`HCSR04.c`)**](scr/HCSR04.c) - Leitura de distância por ultrassom.
+4. 💡 [**LDR (`LDR.c`)**](scr/LDR.c) - Monitoramento de luminosidade.
+5. 📟 [**Menu (`menu.c`)**](scr/menu.c) - Interface de navegação no display OLED.
+6. 🛠️ [**Servo (`servo.c`)**](scr/servo.c) - Controle de um servo motor.
+7. 🧠 [**Principal (`main.c`)**](scr/main.c) - Integração dos módulos.
 
 ---
 
