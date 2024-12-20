@@ -49,7 +49,8 @@ void Servo_Init(void) {
     // Inicializa o PWM para o servo
     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_1);
 }
-```c
+```
+
 ## 4. Referências
 
 - [Datasheet do SG90s](http://www.ee.ic.ac.uk/pcheung/teaching/DE1_EE/stores/sg90_datasheet.pdf) 
