@@ -58,6 +58,7 @@ void Relay_Start(void) {
     relay_active = 1;
     last_relay_time = HAL_GetTick();  // Armazena o tempo atual
 }
+```
 ### 3.2. Navegação do Menu
 
 A navegação do menu é realizada com dois botões: um para navegar entre os itens do menu e outro para selecionar a opção. A função de navegação do menu (`Menu_Navigate`) e de seleção de itens (`Menu_Select`) gerencia o estado do menu e a interação com o usuário.
@@ -95,3 +96,4 @@ void Menu_Navigate(void) {
         ssd1306_UpdateScreen(); // Atualiza a tela com o novo valor
     }
 }
+```
