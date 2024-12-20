@@ -1,10 +1,14 @@
-# Leitura de Dados do Sensor DHT11
+# Leitura de Temperatura e Umidade com DHT11 no STM32
 
-Este documento descreve detalhadamente o funcionamento do código para leitura do sensor **DHT11**, que mede temperatura e umidade, e como o STM32 interage com ele. A comunicação com o DHT11 é feita através de pulsos de alta e baixa tensão, e a troca de dados é realizada por meio de sinais **HIGH** e **LOW**.
+Este documento descreve como configurar e ler os dados de um sensor **DHT11** utilizando um STM32, com a ajuda da biblioteca HAL. O sensor DHT11 fornece medições de temperatura e umidade, que podem ser usadas em uma variedade de aplicações.
 
-## 1. Geração e Leitura dos Pulsos
+## 1. Visão Geral
 
-O sensor **DHT11** utiliza um protocolo de comunicação baseado em pulsos de alta e baixa tensão. O processo de leitura dos dados envolve a troca de sinais entre o microcontrolador (STM32) e o sensor.
+O código realiza as seguintes funções:
+- Configura o pino GPIO do STM32 para comunicação com o sensor DHT11.
+- Envia um sinal de inicialização ao sensor e lê os pulsos de resposta para extrair os dados.
+- Converte os pulsos de resposta em valores digitais de temperatura e umidade.
+- Utiliza um temporizador para medir a duração dos pulsos de resposta do sensor.
 
 ### **Pulso de Início (Start Pulse)**
 
@@ -18,13 +22,45 @@ O sensor **DHT11** utiliza um protocolo de comunicação baseado em pulsos de al
   - Pulso **HIGH** mais longo (> 50 microsegundos) representa **bit 1**.
   - Pulso **HIGH** mais curto (< 50 microsegundos) representa **bit 0**.
 
-## 2. Função `dht11`
+## 2. Configuração do STM32CubeMX
 
-A função `dht11` tem como objetivo ler os dados de temperatura e umidade enviados pelo sensor. A seguir, detalhamos cada parte dessa função.
+Antes de utilizar o código fornecido, é necessário configurar o STM32CubeMX para garantir que o pino correto do GPIO e o temporizador (Timer 2) estejam configurados adequadamente. Aqui estão os passos:
 
-### **Configuração Inicial do Pino GPIO**
+### 2.1. Configuração do Pino de Comunicação com o DHT11
 
-A função `DHT11_SetPinMode` configura o pino GPIO como **saída** para gerar o pulso de início e como **entrada** para ler os sinais de resposta do sensor.
+1. **Habilitar o pino GPIO**:
+   - Acesse a aba de **Peripherals** no STM32CubeMX.
+   - Configure o pino GPIO **PA8** (ou outro pino de sua escolha) como **GPIO_MODE_OUTPUT_PP** para comunicação com o sensor.
+
+2. **Configuração do Timer**:
+   - Habilite o **Timer 2** e configure-o para medir os pulsos de resposta do DHT11.
+   - Configure o timer para uma resolução de tempo adequada para medir os pulsos.
+
+### 2.2. Configuração do Timer para Medição de Pulsos
+
+1. **Habilitar o Timer 2**:
+   - Acesse a aba de **Timers** no STM32CubeMX.
+   - Configure o **Timer 2** para medir os tempos de duração dos pulsos HIGH e LOW durante a comunicação com o sensor.
+
+2. **Configuração de Clock**:
+   - Ajuste os parâmetros de clock do timer para garantir que os pulsos possam ser medidos com precisão.
+
+Após configurar os periféricos no STM32CubeMX, gere o código e abra no **STM32CubeIDE** para programar e depurar o código.
+
+## 3. Funções e Explicação Detalhada
+
+### 3.1. Função `DHT11_SetPinMode`
+
+Esta função configura o pino GPIO para o modo desejado, como **saída** ou **entrada**.
 
 ```c
-DHT11_SetPinMode(GPIOA, GPIO_PIN_8, GPIO_MODE_OUTPUT_PP);
+void DHT11_SetPinMode(GPIO_TypeDef *GPIOx, uint16_t GPIO_Pin, uint32_t Mode) {
+    GPIO_InitTypeDef GPIO_InitStruct = {0};
+    GPIO_InitStruct.Pin = GPIO_Pin;
+    GPIO_InitStruct.Mode = Mode;
+    GPIO_InitStruct.Pull = GPIO_NOPULL;
+    GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_VERY_HIGH;
+    HAL_GPIO_Init(GPIOx, &GPIO_InitStruct);
+}
+```
+https://www.mouser.com/datasheet/2/758/DHT11-Technical-Data-Sheet-Translated-Version-1143054.pdf
