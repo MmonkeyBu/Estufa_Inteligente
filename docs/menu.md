@@ -152,3 +152,59 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
     }
 }
 ```
+
+1. **Configuração de Pinos GPIO:**
+   - Selecione os pinos conectados aos botões, por exemplo, `Botton_1_Pin` e `Botton_2_Pin`.
+   - Configure os pinos como **GPIO_EXTI** no modo de entrada.
+
+2. **Habilitação das Interrupções:**
+   - Vá até a aba de interrupções e habilite as linhas EXTI correspondentes aos pinos (ex.: `EXTI15_10`).
+
+3. **Gerar Código:**
+   - Clique em `Project -> Generate Code` e abra o projeto no STM32CubeIDE.
+
+### 2. Implementação no Código
+No arquivo `stm32f4xx_it.c`, configure os callbacks para as interrupções:
+
+#### Declaração de Variáveis e Definições
+No início do arquivo, declare variáveis para controle de debounce:
+
+```c
+static uint32_t last_debounce_time_nav = 0;
+static uint32_t last_debounce_time_select = 0;
+#define DEBOUNCE_DELAY 50 // 50 ms debounce delay
+```
+
+#### Callback para GPIO (Botões)
+Implemente o callback para capturar os eventos de interrupção:
+
+```c
+void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin) {
+    if (GPIO_Pin == Botton_2_Pin) {
+        uint32_t current_time = HAL_GetTick();
+        if ((current_time - last_debounce_time_nav) > DEBOUNCE_DELAY) {
+            last_debounce_time_nav = current_time;
+            Menu_Navigate(); // Função que implementa a navegação do menu
+        }
+    } else if (GPIO_Pin == Botton_1_Pin) {
+        uint32_t current_time = HAL_GetTick();
+        if ((current_time - last_debounce_time_select) > DEBOUNCE_DELAY) {
+            last_debounce_time_select = current_time;
+            Menu_Select(); // Função que implementa a seleção no menu
+        }
+    }
+}
+```
+
+#### Configuração de Interrupção de Timer (Opcional)
+No caso de usar um Timer para leituras periódicas de sensores, como no exemplo com o DHT11:
+
+```c
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim) {
+    if (htim->Instance == TIM10) {
+        if (reading_active) {
+            dht11(&tempdht11, &umidht11); // Função que lê dados do sensor DHT11
+        }
+    }
+}
+```
