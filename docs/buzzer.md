@@ -48,6 +48,6 @@ void Buzzer_Init(void) {
 ```
 ## 7. Referências
 
-- [Datasheet do SG90s](https://www.farnell.com/datasheets/2171929.pdf) 
+- [Datasheet do buzzer](https://www.farnell.com/datasheets/2171929.pdf) 
 
 
