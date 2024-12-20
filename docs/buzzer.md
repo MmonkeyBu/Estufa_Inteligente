@@ -45,3 +45,5 @@ void Buzzer_Init(void) {
     // Inicializa o PWM para o buzzer
     HAL_TIM_PWM_Start(&htim3, TIM_CHANNEL_2);
 }
+```
+https://www.farnell.com/datasheets/2171929.pdf
