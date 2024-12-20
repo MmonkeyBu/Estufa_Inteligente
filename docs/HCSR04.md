@@ -81,6 +81,7 @@ void HCSR04_Init(void) {
     // Inicia o Timer
     HAL_TIM_Base_Start(&htim2);
 }
+```
 ## 4. Referências
 
 - [Datasheet do HCSR04](https://cdn.sparkfun.com/datasheets/Sensors/Proximity/HCSR04.pdf) 
